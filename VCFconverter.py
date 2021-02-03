@@ -68,7 +68,13 @@ class MainDialog(QDialog):
         df_snp_common['ALT'] = alt
         
         df = df_snp_common.reset_index()[df_snp_common.reset_index().columns[1:]]
-        df_sort = df.sort_values(by=['#CHROM', 'POS'])
+        def sorted_chr(x):
+            try:
+                return int(x.split('Gm')[1])
+            except:
+                return int(x.split('_')[1]) + 999
+        df['sort'] = list(map(sorted_chr, df['#CHROM']))
+        df_sort = df.sort_values(by=['sort', 'POS'])
 
         header = '''##reference=glyma.Wm82.gnm4.4PTR.genome_main.fna\n'''
 
@@ -82,7 +88,7 @@ class MainDialog(QDialog):
         with open(name, 'w') as vcf:
             vcf.write(header)
 
-        df.to_csv(name, sep='\t', mode='a', index=False)
+        df_sort.to_csv(name, sep='\t', mode='a', index=False)
 
 
 if __name__ == '__main__':
