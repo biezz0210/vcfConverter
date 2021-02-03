@@ -23,10 +23,7 @@ class MainDialog(QDialog):
 
     def button_click_open(self):
         file_name = QFileDialog.getOpenFileName(self)
-        # exist = self.textEdit.toPlainText()
         self.textEdit.setText(file_name[0])
-        # out = 'PATH :  ' + '/'.join(file_name[0].split('/')[:-1]) + '/'
-        # self.label_output.setText(out)
         _file.append(file_name[0])
 
 
