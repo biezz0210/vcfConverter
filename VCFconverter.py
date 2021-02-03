@@ -58,7 +58,7 @@ class MainDialog(QDialog):
         df_db_common = df_db_ix.loc[common_ix]
 
         chr_fix = list(map(lambda x : x.split('-')[0], df_db_common['POSv4']))
-        pos_fix = list(map(lambda x : x.split('-')[1], df_db_common['POSv4']))
+        pos_fix = list(map(lambda x : int(x.split('-')[1]), df_db_common['POSv4']))
         ref = list(df_db_common['REF'])
         alt = list(df_db_common['ALT'])
 
@@ -70,6 +70,7 @@ class MainDialog(QDialog):
         df_snp_common['ALT'] = alt
         
         df = df_snp_common.reset_index()[df_snp_common.reset_index().columns[1:]]
+        df_sort = df.sort_values(by=['#CHROM', 'POS'])
 
         header = '''##reference=glyma.Wm82.gnm4.4PTR.genome_main.fna\n'''
         output_vcf = _file[-1].split('.vcf')[0] + '_v4.vcf'
