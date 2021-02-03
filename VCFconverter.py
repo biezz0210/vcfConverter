@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot, Qt
 import pandas as pd
+import emoji
 
 test_ui = r'./VCFconverter.ui'
 
@@ -24,13 +25,13 @@ class MainDialog(QDialog):
         file_name = QFileDialog.getOpenFileName(self)
         # exist = self.textEdit.toPlainText()
         self.textEdit.setText(file_name[0])
-        out = 'PATH :  ' + '/'.join(file_name[0].split('/')[:-1]) + '/'
-        self.label_output.setText(out)
+        # out = 'PATH :  ' + '/'.join(file_name[0].split('/')[:-1]) + '/'
+        # self.label_output.setText(out)
         _file.append(file_name[0])
 
 
     def button_convert(self):
-        print(_file[-1])
+
         ver = self.comboBox.currentText()
 
         df = pd.read_csv('%s'%_file[-1], compression='gzip', sep='\t',header=None ,error_bad_lines=False,warn_bad_lines=False)
@@ -73,15 +74,18 @@ class MainDialog(QDialog):
         df_sort = df.sort_values(by=['#CHROM', 'POS'])
 
         header = '''##reference=glyma.Wm82.gnm4.4PTR.genome_main.fna\n'''
-        output_vcf = _file[-1].split('.vcf')[0] + '_v4.vcf'
 
-        with open(output_vcf, 'w') as vcf:
+        txt = emoji.emojize('Done :thumbs_up:')
+        self.label_result.setText('%s'%txt)
+
+
+        name = QFileDialog.getSaveFileName(self, 'Open file', './')
+        name = name[0] + '.vcf'
+
+        with open(name, 'w') as vcf:
             vcf.write(header)
 
-        df.to_csv(output_vcf, sep='\t', mode='a', index=False)
-
-        self.label_result.setText('Done')
-
+        df.to_csv(name, sep='\t', mode='a', index=False)
 
 
 if __name__ == '__main__':
