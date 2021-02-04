@@ -68,9 +68,9 @@ class MainDialog(QDialog):
 
 
         if ver[-3:] == '1.0':
-            df_db = pd.read_csv('./data/Ver1DB.csv')
+            df_db = pd.read_csv('./data/Ver1DB.csv.gz', compression='gzip')
         else:
-            df_db = pd.read_csv('./data/Ver2DB.csv')
+            df_db = pd.read_csv('./data/Ver2DB.csv.gz', compression='gzip')
         common_ix = set(df_db['POSpre']) & set(df_snp['ix'])
         df_snp_ix = df_snp.set_index('ix')
         df_db_ix = df_db.set_index('POSpre')

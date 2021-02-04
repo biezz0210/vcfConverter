@@ -1,3 +1,5 @@
 venv
 test_vcf
-data
+.DS_Store
+test.ipynb
+test.vcf
